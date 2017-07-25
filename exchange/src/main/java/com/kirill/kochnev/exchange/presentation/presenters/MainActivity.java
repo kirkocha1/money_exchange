@@ -1,4 +1,4 @@
-package kochnev.kirill.com.exchange;
+package com.kirill.kochnev.exchange.presentation.presenters;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
+import com.kirill.kochnev.exchange.R;
+import com.kirill.kochnev.websocket.RxSocketWrapper;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import kochnev.kirill.com.websocket.RxSocketWrapper;
 
 public class MainActivity extends AppCompatActivity {
 

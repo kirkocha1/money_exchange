@@ -1,4 +1,4 @@
-package kochnev.kirill.com.exchange;
+package com.kirill.kochnev.exchange;
 
 import org.junit.Test;
 

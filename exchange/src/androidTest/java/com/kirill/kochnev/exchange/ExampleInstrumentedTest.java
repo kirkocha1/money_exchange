@@ -1,4 +1,4 @@
-package kochnev.kirill.com.exchange;
+package com.kirill.kochnev.exchange;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
