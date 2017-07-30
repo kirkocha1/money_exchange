@@ -37,8 +37,8 @@ public enum ToolType {
 
     private String slashName;
 
-    public void setSlashName(String slashName) {
-        this.slashName = slashName;
+    public String getSlashName() {
+        return slashName;
     }
 
     ToolType(String slashName) {

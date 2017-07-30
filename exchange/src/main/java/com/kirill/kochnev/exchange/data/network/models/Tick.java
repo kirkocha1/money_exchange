@@ -15,10 +15,10 @@ public class Tick {
     public ToolType toolType;
 
     @SerializedName("b")
-    public double bid;
+    public BigDecimal bid;
 
     @SerializedName("a")
-    public double ask;
+    public BigDecimal ask;
 
     @SerializedName("spr")
     public float spread;

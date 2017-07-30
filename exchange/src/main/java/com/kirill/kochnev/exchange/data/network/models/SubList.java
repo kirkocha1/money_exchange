@@ -1,7 +1,6 @@
 package com.kirill.kochnev.exchange.data.network.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.kirill.kochnev.exchange.data.db.models.TickDb;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * Created by Kirill Kochnev on 27.07.17.
  */
 
-public class SubList implements IBaseModel {
+public class SubList extends CommonModel {
 
     @SerializedName("ticks")
     public List<Tick> ticks;
@@ -23,4 +22,5 @@ public class SubList implements IBaseModel {
     public List<Tick> getList() {
         return ticks;
     }
+
 }

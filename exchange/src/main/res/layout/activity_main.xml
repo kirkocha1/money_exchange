@@ -11,27 +11,42 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kirill.kochnev.exchange.presentation.views.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:background="@color/colorPrimary">
 
-    <Button
-        android:id="@+id/btn_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Disconnect" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SEND" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="MENU"
+                android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/reconnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RECONNECT" />
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/settings" />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

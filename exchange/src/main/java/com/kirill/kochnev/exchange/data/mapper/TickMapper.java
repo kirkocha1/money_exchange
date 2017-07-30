@@ -14,8 +14,8 @@ public class TickMapper {
 
     public TickDb map(Tick tick) {
         TickDb tickDb = new TickDb();
-        tickDb.setAsk(tick.ask);
-        tickDb.setBid(tick.bid);
+        tickDb.setAsk(tick.ask.toEngineeringString());
+        tickDb.setBid(tick.bid.toEngineeringString());
         tickDb.setSpread(tick.spread);
         tickDb.setToolType(tick.toolType.toString());
         return tickDb;

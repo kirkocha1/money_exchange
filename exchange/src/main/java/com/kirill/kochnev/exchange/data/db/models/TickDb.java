@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -22,14 +23,13 @@ public class TickDb {
     private String toolType;
 
     @ColumnInfo(name = "bid")
-    private double bid;
+    private String bid;
 
     @ColumnInfo(name = "ask")
-    private double ask;
+    private String ask;
 
     @ColumnInfo(name = "spread")
     private float spread;
-
 
     public TickDb() {
         this.date = new Date().getTime();
@@ -59,19 +59,19 @@ public class TickDb {
         this.toolType = toolType;
     }
 
-    public double getBid() {
+    public String getBid() {
         return bid;
     }
 
-    public void setBid(double bid) {
+    public void setBid(String bid) {
         this.bid = bid;
     }
 
-    public double getAsk() {
+    public String getAsk() {
         return ask;
     }
 
-    public void setAsk(double ask) {
+    public void setAsk(String ask) {
         this.ask = ask;
     }
 
@@ -82,4 +82,5 @@ public class TickDb {
     public void setSpread(float spread) {
         this.spread = spread;
     }
+
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Kirill Kochnev on 27.07.17.
  */
 
-public class SubscribtionResponse implements IBaseModel {
+public class SubscribtionResponse extends CommonModel  {
 
     @SerializedName("subscribed_count")
     public int count;
@@ -25,4 +25,5 @@ public class SubscribtionResponse implements IBaseModel {
     public List<Tick> getList() {
         return subList.ticks;
     }
+
 }

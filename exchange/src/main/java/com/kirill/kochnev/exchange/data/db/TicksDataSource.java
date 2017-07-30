@@ -21,4 +21,8 @@ public class TicksDataSource {
     public List<TickDb> getTicksByToolType(ToolType type) {
         return dao.getTicksByToolType(type.toString());
     }
+
+    public void putTicks(List<TickDb> tickDbs) {
+        dao.putTicks(tickDbs);
+    }
 }
