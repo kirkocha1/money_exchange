@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.kirill.kochnev.exchange.ExchangeApplication;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
-public class ToolSettingsFragment extends MvpFragment implements IToolSettingsView {
+public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolSettingsView {
 
     private static final String TAG = "ToolSettingsFragment";
 

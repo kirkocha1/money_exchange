@@ -4,5 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/list_view"/>
+    <com.kirill.kochnev.exchange.presentation.views.components.ListWithBlankView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

@@ -2,15 +2,12 @@ package com.kirill.kochnev.exchange.presentation.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.kirill.kochnev.exchange.ExchangeApplication;
@@ -20,6 +17,7 @@ import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.presenters.TickListPresenter;
 import com.kirill.kochnev.exchange.presentation.views.adapter.TicksAdapter;
+import com.kirill.kochnev.exchange.presentation.views.components.ListWithBlankView;
 
 import java.util.List;
 
@@ -32,15 +30,12 @@ import butterknife.ButterKnife;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
-public class TickListFragment extends MvpFragment implements ITickListView {
+public class TickListFragment extends MvpAppCompatFragment implements ITickListView {
 
     public static final String TAG = "TickListFragment";
 
-    @BindView(R.id.list)
-    RecyclerView list;
-
-    @BindView(R.id.blank)
-    ImageView blank;
+    @BindView(R.id.list_view)
+    ListWithBlankView list;
 
     @Inject
     TickInteractor interactor;
@@ -73,8 +68,7 @@ public class TickListFragment extends MvpFragment implements ITickListView {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         adapter = new TicksAdapter();
-        list.setAdapter(adapter);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.initList(adapter);
     }
 
     @Override
@@ -86,11 +80,10 @@ public class TickListFragment extends MvpFragment implements ITickListView {
     }
 
     @Override
-    public void recreateList(List<TickUI> list) {
-        adapter.replceWithNewList(list);
-        this.list.post(() -> {
-            this.list.setVisibility(list == null ? View.GONE : View.VISIBLE);
-            blank.setVisibility(list == null ? View.VISIBLE : View.GONE);
+    public void recreateList(List<TickUI> ticks) {
+        adapter.replceWithNewList(ticks);
+        list.post(() -> {
+            list.setBlankVisibility(ticks == null);
         });
     }
 }
