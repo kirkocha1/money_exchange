@@ -3,6 +3,7 @@ package com.kirill.kochnev.exchange.repositories;
 import android.util.Log;
 
 import com.kirill.kochnev.exchange.data.db.TicksDataSource;
+import com.kirill.kochnev.exchange.data.db.models.TickDb;
 import com.kirill.kochnev.exchange.data.enums.MessageType;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.data.mapper.TickMapper;
@@ -23,7 +24,8 @@ import io.reactivex.Single;
  */
 
 public class TickRepository {
-
+    private static final String SUBSCRIBE_COMMAND = "SUBSCRIBE: ";
+    private static final String UNSUBSCRIBE_COMMAND = "UNSUBSCRIBE: ";
     private static final String TAG = "TickRepository";
     private RxSocketWrapper socket;
     private TicksDataSource ticksCache;
@@ -55,18 +57,18 @@ public class TickRepository {
         });
     }
 
+    public Single<List<TickDb>> getCachedTicks() {
+        return getToolTypeList().flatMap(list -> Single.fromCallable(() -> ticksCache.getSubscribedTicks(list, list.size())));
+    }
+
     public Completable addNewTool(ToolType type) {
-        return Completable.fromAction(() -> {
-            preferenceManager.putBoolean(type.toString(), true);
-            socket.sendMessage("SUBSCRIBE: " + type.toString());
-        });
+        return socket.sendMessageAsComplitable(SUBSCRIBE_COMMAND + type.toString())
+                .andThen(Completable.fromAction(() -> preferenceManager.putBoolean(type.toString(), true)));
     }
 
     public Completable deleteNewTool(ToolType type) {
-        return Completable.fromAction(() -> {
-            preferenceManager.putBoolean(type.toString(), false);
-            socket.sendMessage("UNSUBSCRIBE: " + type.toString());
-        });
+        return socket.sendMessageAsComplitable(UNSUBSCRIBE_COMMAND + type.toString())
+                .andThen(Completable.fromAction(() -> preferenceManager.putBoolean(type.toString(), false)));
     }
 
     public Single<List<ToolType>> getToolTypeList() {
@@ -81,8 +83,12 @@ public class TickRepository {
         });
     }
 
+    public Completable restartStream() {
+        return socket.restart();
+    }
+
     private void restoreToolsSubscribtion() throws Exception {
-        String message = "SUBSCRIBE: " + buildToolChain();
+        String message = SUBSCRIBE_COMMAND + buildToolChain();
         socket.sendMessage(message);
     }
 

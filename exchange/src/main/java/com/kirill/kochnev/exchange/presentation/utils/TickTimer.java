@@ -1,7 +1,6 @@
 package com.kirill.kochnev.exchange.presentation.utils;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.models.TickUI;
@@ -31,7 +30,6 @@ public class TickTimer {
         if (callback == null) {
             this.callback = timerCallback;
             handler.postDelayed(() -> {
-                Log.e("TIMER", "TRIGER " + toolTickUi.values().size());
                 if (this.callback != null && toolTickUi.size() != 0) {
                     timerCallback.triger(new ArrayList<>(toolTickUi.values()));
                 }

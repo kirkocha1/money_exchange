@@ -14,12 +14,14 @@ public class ErrorHandler {
 
     public void showSnackBar(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        snackbar.setActionTextColor(ContextCompat.getColor(view.getContext(), R.color.white));
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.red));
         snackbar.show();
     }
 
     public void showSnackBar(View view, String message, View.OnClickListener listener) {
-        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(ContextCompat.getColor(view.getContext(), R.color.white));
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.red));
         snackbar.setAction(R.string.retry, listener);
         snackbar.show();

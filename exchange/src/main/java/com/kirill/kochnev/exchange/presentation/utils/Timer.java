@@ -10,23 +10,23 @@ public class Timer {
 
     private long startTime;
     private int seconds;
-    private boolean isLaunched = false;
+    private boolean isFinished = true;
 
     public Timer(int seconds) {
         this.seconds = seconds;
-        startTimer();
     }
 
     public boolean isLeft() {
-        return (System.currentTimeMillis() - startTime) / MILLISECONDS_COEFF >= seconds;
+        isFinished = (System.currentTimeMillis() - startTime) / MILLISECONDS_COEFF >= seconds;
+        return isFinished;
     }
 
     public void startTimer() {
-        isLaunched = true;
+        isFinished = false;
         startTime = System.currentTimeMillis();
     }
 
-    public boolean isLaunched() {
-        return isLaunched;
+    public boolean isFinished() {
+        return isFinished;
     }
 }

@@ -15,22 +15,22 @@ import java.util.List;
 
 public class TickUiMapper {
 
-//    public TickUI map(TickDb tickDb) {
-//        TickUI tickUI = new TickUI();
-//        tickUI.setType(ToolType.valueOf(tickDb.getToolType()));
-//        tickUI.setBid(new BigDecimal(tickDb.getBid()).setScale(5, BigDecimal.ROUND_DOWN));
-//        tickUI.setAsk(new BigDecimal(tickDb.getBid()).setScale(5, BigDecimal.ROUND_DOWN));
-//        tickUI.setSpread(tickDb.getSpread());
-//        return tickUI;
-//    }
+    public TickUI map(TickDb tickDb) {
+        TickUI tickUI = new TickUI();
+        tickUI.setType(ToolType.valueOf(tickDb.getToolType()));
+        tickUI.setBid(new BigDecimal(tickDb.getBid()).setScale(5, BigDecimal.ROUND_DOWN));
+        tickUI.setAsk(new BigDecimal(tickDb.getBid()).setScale(5, BigDecimal.ROUND_DOWN));
+        tickUI.setSpread(tickDb.getSpread());
+        return tickUI;
+    }
 
-//    public List<TickUI> mapList(List<TickDb> tickDbs) {
-//        List<TickUI> ticks = new ArrayList<>();
-//        for (TickDb tickDb : tickDbs) {
-//            ticks.add(map(tickDb));
-//        }
-//        return ticks;
-//    }
+    public List<TickUI> mapToUiList(List<TickDb> tickDbs) {
+        List<TickUI> ticks = new ArrayList<>();
+        for (TickDb tickDb : tickDbs) {
+            ticks.add(map(tickDb));
+        }
+        return ticks;
+    }
 
     public TickUI map(Tick tick) {
         TickUI tickUI = new TickUI();

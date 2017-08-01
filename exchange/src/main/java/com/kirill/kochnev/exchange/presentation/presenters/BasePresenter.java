@@ -21,7 +21,11 @@ public class BasePresenter<V extends MvpView> extends MvpPresenter<V> {
 
     @Override
     public void onDestroy() {
-        compositeDisposable.clear();
+        clearDisposable();
         super.onDestroy();
+    }
+
+    public void clearDisposable() {
+        compositeDisposable.clear();
     }
 }

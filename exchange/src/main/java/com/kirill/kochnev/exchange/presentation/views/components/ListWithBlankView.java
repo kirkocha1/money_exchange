@@ -52,5 +52,6 @@ public class ListWithBlankView extends FrameLayout {
 
     public void initList(RecyclerView.Adapter adapter) {
         list.setAdapter(adapter);
+        setBlankVisibility(adapter.getItemCount() == 0);
     }
 }

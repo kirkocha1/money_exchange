@@ -3,7 +3,6 @@ package com.kirill.kochnev.exchange.presentation.presenters;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
 import com.kirill.kochnev.exchange.presentation.interfaces.IToolSettingsView;
@@ -30,8 +29,12 @@ public class ToolSettingsPresenter extends BasePresenter<IToolSettingsView> {
     }
 
     public void changeToolTypeModification(boolean isChecked, ToolType type) {
-         addToCompositeDisposable(interactor.changeNotification(type, isChecked).subscribe(() -> {
+        addToCompositeDisposable(interactor.changeNotification(type, isChecked).subscribe(() -> {
             Log.d(TAG, "Change tool type subscription: " + isChecked + " tool type: " + type);
-        }, e -> Log.e(TAG, e.getMessage())));
+        }, e -> {
+            Log.e(TAG, e.getMessage());
+            getViewState().droptToolType(type);
+            getViewState().showMessage(e.getMessage());
+        }));
     }
 }

@@ -33,11 +33,13 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
     }
 
     private void replaceWithLatest(List<TickUI> oldList, List<TickUI> newList) {
-        for (TickUI tickUI : oldList) {
-            for (TickUI newTick : newList) {
-                if (tickUI.getType() == newTick.getType()) {
-                    tickUI.updateWithAnother(newTick);
-                    break;
+        if (oldList != null && newList != null) {
+            for (TickUI tickUI : oldList) {
+                for (TickUI newTick : newList) {
+                    if (tickUI.getType() == newTick.getType()) {
+                        tickUI.updateWithAnother(newTick);
+                        break;
+                    }
                 }
             }
         }

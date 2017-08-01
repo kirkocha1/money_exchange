@@ -1,9 +1,12 @@
 package com.kirill.kochnev.exchange.data.db;
 
+import android.arch.persistence.room.Query;
+
 import com.kirill.kochnev.exchange.data.db.dao.TickDao;
 import com.kirill.kochnev.exchange.data.db.models.TickDb;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,14 @@ public class TicksDataSource {
 
     public List<TickDb> getTicksByToolType(ToolType type) {
         return dao.getTicksByToolType(type.toString());
+    }
+
+    public List<TickDb> getSubscribedTicks(List<ToolType> types, int count) {
+        List<String> dbToolType = new ArrayList<>();
+        for (ToolType type : types) {
+            dbToolType.add(type.toString());
+        }
+        return dao.getSubscribedTicks(dbToolType, count);
     }
 
     public void putTicks(List<TickDb> tickDbs) {

@@ -88,6 +88,21 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsAdapter.ToolViewHold
         }
     }
 
+    public void uncheckTool(ToolType type) {
+        boolean wasAdded = false;
+        for (ToolType item : checkedItems) {
+            if (item.equals(type)) {
+                checkedItems.remove(item);
+                wasAdded = true;
+                break;
+            }
+        }
+        if (!wasAdded) {
+            checkedItems.add(type);
+        }
+        notifyDataSetChanged();
+    }
+
     public void setListener(OnCheckBoxListener listener) {
         this.listener = listener;
     }

@@ -9,6 +9,7 @@ import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Kirill Kochnev on 28.07.17.
@@ -24,10 +25,25 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
     public TickListPresenter(TickInteractor interactor, TickTimer tickTimer) {
         this.interactor = interactor;
         this.timer = tickTimer;
-        subscribeOnStream();
+        addToCompositeDisposable(interactor.getCachedTicks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(list -> subscribeOnStream())
+                .subscribe(list -> getViewState().recreateList(list), e -> {
+                    Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
+                }));
+
     }
 
+    public void retry() {
+        addToCompositeDisposable(interactor.restartStream().subscribe(this::subscribeOnStream, e -> {
+            Log.e(TAG, "restart process failed");
+        }));
+    }
+
+
     private void subscribeOnStream() {
+        clearDisposable();
         addToCompositeDisposable(interactor.getLiveTicks()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -38,7 +54,9 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
                     }
                 }, e -> {
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
-                    getViewState().showError("ERROR MESSAGE");
+
+                    getViewState().showMessage("ERROR MESSAGE");
+
                 }));
     }
 }

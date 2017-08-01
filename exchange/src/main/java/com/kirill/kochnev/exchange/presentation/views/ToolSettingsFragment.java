@@ -17,6 +17,7 @@ import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
 import com.kirill.kochnev.exchange.presentation.interfaces.IToolSettingsView;
 import com.kirill.kochnev.exchange.presentation.presenters.ToolSettingsPresenter;
+import com.kirill.kochnev.exchange.presentation.utils.ErrorHandler;
 import com.kirill.kochnev.exchange.presentation.views.adapter.ToolsAdapter;
 
 import java.util.List;
@@ -75,5 +76,15 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
     @Override
     public void invalidateToolTypeList(List<ToolType> toolTypes) {
         adapter.setCheckedItems(toolTypes);
+    }
+
+    @Override
+    public void droptToolType(ToolType type) {
+        adapter.uncheckTool(type);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        new ErrorHandler().showSnackBar(list, message);
     }
 }

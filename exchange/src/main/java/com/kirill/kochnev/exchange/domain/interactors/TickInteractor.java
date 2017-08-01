@@ -3,6 +3,7 @@ package com.kirill.kochnev.exchange.domain.interactors;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.mappers.TickUiMapper;
 import com.kirill.kochnev.exchange.domain.models.CommonUiModel;
+import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.repositories.TickRepository;
 
 import java.util.List;
@@ -25,6 +26,11 @@ public class TickInteractor {
         this.mapper = mapper;
     }
 
+    public Single<List<TickUI>> getCachedTicks() {
+        return repository.getCachedTicks().map(mapper::mapToUiList);
+
+    }
+
     public Observable<CommonUiModel> getLiveTicks() {
         return repository.getTicks().map(model -> {
             CommonUiModel res = new CommonUiModel(model.getMessageType());
@@ -33,6 +39,10 @@ public class TickInteractor {
             }
             return res;
         });
+    }
+
+    public Completable restartStream() {
+        return repository.restartStream();
     }
 
     public Completable changeNotification(ToolType type, boolean isChecked) {

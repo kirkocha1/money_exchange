@@ -93,7 +93,9 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     }
 
     @Override
-    public void showError(String error) {
-        new ErrorHandler().showSnackBar(list, error);
+    public void showMessage(String error) {
+        new ErrorHandler().showSnackBar(list, error, v -> {
+            presenter.retry();
+        });
     }
 }
