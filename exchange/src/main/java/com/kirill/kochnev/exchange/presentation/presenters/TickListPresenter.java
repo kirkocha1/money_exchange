@@ -5,9 +5,8 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.kirill.kochnev.exchange.data.enums.MessageType;
 import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
-import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
-import com.kirill.kochnev.exchange.presentation.utils.Timer;
+import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -17,12 +16,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
 public class TickListPresenter extends BasePresenter<ITickListView> {
-    public static final String TAG = "TickListPresenter";
-    private TickInteractor interactor;
-    private Timer timer = new Timer(3);
+    private static final String TAG = "TickListPresenter";
 
-    public TickListPresenter(TickInteractor interactor) {
+    private TickInteractor interactor;
+    private TickTimer timer;
+
+    public TickListPresenter(TickInteractor interactor, TickTimer tickTimer) {
         this.interactor = interactor;
+        this.timer = tickTimer;
         subscribeOnStream();
     }
 
@@ -32,17 +33,12 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
                 .subscribe(model -> {
                     if (model.getMessageType().equals(MessageType.SUBSCRIPTION)) {
                         getViewState().recreateList(model.getTicks());
-                    } else if ((model.getTicks() != null && model.getTicks().size() != 0)
-                            && (!timer.isLaunched() || timer.isLeft())) {
-                        timer.startTimer();
-                        Log.e(TAG, model.getTicks().size() + "");
-                        for (TickUI tickUI : model.getTicks()) {
-                            Log.e(TAG, tickUI.getType().getSlashName());
-                        }
-                        getViewState().invalidateList(model.getTicks());
+                    } else if ((model.getTicks() != null && model.getTicks().size() != 0)) {
+                        timer.triger(model.getTicks(), list -> getViewState().invalidateList(list));
                     }
                 }, e -> {
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
+                    getViewState().showError("ERROR MESSAGE");
                 }));
     }
 }

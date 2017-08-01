@@ -1,8 +1,8 @@
 package com.kirill.kochnev.exchange.presentation.interfaces;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.kirill.kochnev.exchange.domain.models.TickUI;
 
@@ -18,5 +18,9 @@ public interface ITickListView extends MvpView {
     @StateStrategyType(SingleStateStrategy.class)
     void recreateList(List<TickUI> list);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void invalidateList(List<TickUI> list);
+
+    void showError(String error);
+
 }

@@ -2,8 +2,10 @@ package com.kirill.kochnev.exchange.di.modules;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 
 import com.kirill.kochnev.exchange.presentation.utils.PrefManager;
+import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 
 import javax.inject.Singleton;
 
@@ -27,6 +29,11 @@ public class UtilsModule {
     @Provides
     public PrefManager providePrefManager(SharedPreferences preferences) {
         return new PrefManager(preferences);
+    }
+
+    @Provides
+    public TickTimer provideTimer() {
+        return new TickTimer(new Handler(), 2);
     }
 
 }

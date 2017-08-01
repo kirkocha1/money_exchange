@@ -16,6 +16,8 @@ import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
 import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.presenters.TickListPresenter;
+import com.kirill.kochnev.exchange.presentation.utils.ErrorHandler;
+import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 import com.kirill.kochnev.exchange.presentation.views.adapter.TicksAdapter;
 import com.kirill.kochnev.exchange.presentation.views.components.ListWithBlankView;
 
@@ -40,12 +42,15 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     @Inject
     TickInteractor interactor;
 
+    @Inject
+    TickTimer tickTimer;
+
     @InjectPresenter
     TickListPresenter presenter;
 
     @ProvidePresenter
     TickListPresenter providePresenter() {
-        return new TickListPresenter(interactor);
+        return new TickListPresenter(interactor, tickTimer);
     }
 
     private TicksAdapter adapter;
@@ -85,5 +90,10 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
         list.post(() -> {
             list.setBlankVisibility(ticks == null);
         });
+    }
+
+    @Override
+    public void showError(String error) {
+        new ErrorHandler().showSnackBar(list, error);
     }
 }
