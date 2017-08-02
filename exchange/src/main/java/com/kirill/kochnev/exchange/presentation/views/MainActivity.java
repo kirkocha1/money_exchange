@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kirill.kochnev.exchange.ExchangeApplication;
 import com.kirill.kochnev.exchange.R;
 import com.kirill.kochnev.exchange.presentation.utils.AnimationHelper;
+import com.kirill.kochnev.exchange.presentation.utils.FragmentNavigator;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,9 +25,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.back_action)
     ImageView back;
 
+    @BindView(R.id.bar_title)
+    TextView title;
 
     @BindView(R.id.settings)
     ImageView settings;
+
+    @Inject
+    FragmentNavigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,26 +45,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         setSupportActionBar(toolbar);
-        back.setOnClickListener(v -> {
-            getSupportFragmentManager().popBackStack();
+        title.setText(getString(R.string.ticks_title));
+        back.setOnClickListener(v -> navigator.back(() -> {
             AnimationHelper.rotateHideAnimation(this, back, true);
+            title.setText(getString(R.string.ticks_title));
+        }));
+        settings.setOnClickListener(v ->
+                navigator.navigateTo(FragmentNavigator.SETTINGS_SCREEN, () -> {
+                    AnimationHelper.rotateHideAnimation(this, back, false);
+                    title.setText(getString(R.string.setting_title));
+                }));
+    }
 
-        });
-        settings.setOnClickListener(v -> {
-            if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
-                AnimationHelper.rotateHideAnimation(this, back, false);
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                        .addToBackStack(ToolSettingsFragment.TAG)
-                        .hide(getSupportFragmentManager().findFragmentByTag(TickListFragment.TAG))
-                        .add(R.id.container, new ToolSettingsFragment())
-                        .commit();
-            }
-        });
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                .replace(R.id.container, new TickListFragment(), TickListFragment.TAG)
-                .commit();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigator.setManager(getSupportFragmentManager());
+        navigator.navigateTo(FragmentNavigator.TICKS_SCREEN);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        navigator.setManager(null);
     }
 
     @Override

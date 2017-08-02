@@ -66,11 +66,7 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        adapter = new ToolsAdapter();
-        adapter.setListener(presenter::changeToolTypeModification);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        list.setAdapter(adapter);
+        init(view);
     }
 
     @Override
@@ -86,5 +82,13 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
     @Override
     public void showMessage(String message) {
         new ErrorHandler().showSnackBar(list, message);
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this, view);
+        adapter = new ToolsAdapter();
+        adapter.setListener(presenter::changeToolTypeModification);
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setAdapter(adapter);
     }
 }

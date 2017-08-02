@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
+import com.kirill.kochnev.exchange.presentation.utils.FragmentNavigator;
 import com.kirill.kochnev.exchange.presentation.utils.PrefManager;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 
@@ -29,6 +30,12 @@ public class UtilsModule {
     @Provides
     public PrefManager providePrefManager(SharedPreferences preferences) {
         return new PrefManager(preferences);
+    }
+
+    @Singleton
+    @Provides
+    public FragmentNavigator provideNavigator() {
+        return new FragmentNavigator();
     }
 
     @Provides

@@ -2,5 +2,6 @@
     <string name="app_name">exchange</string>
     <string name="blank_title">no tools were chosen</string>
     <string name="retry">retry</string>
-
+    <string name="setting_title">Settings</string>
+    <string name="ticks_title">Exchange course</string>
 </resources>

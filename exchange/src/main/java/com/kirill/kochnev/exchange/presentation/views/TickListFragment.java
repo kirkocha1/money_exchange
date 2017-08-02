@@ -2,7 +2,6 @@ package com.kirill.kochnev.exchange.presentation.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,10 +38,10 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
 
     public static final String TAG = "TickListFragment";
 
+    private TicksAdapter adapter;
+
     @BindView(R.id.list_view)
     ListWithBlankView list;
-
-    private TickHeaderView header;
 
     @Inject
     TickInteractor interactor;
@@ -57,8 +56,6 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     TickListPresenter providePresenter() {
         return new TickListPresenter(interactor, tickTimer);
     }
-
-    private TicksAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +96,7 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
 
     private void init(View view) {
         ButterKnife.bind(this, view);
-        header = new TickHeaderView(getActivity());
+        TickHeaderView header = new TickHeaderView(getActivity());
         header.setOnSpreadSortClickListner((v, isAsk) -> {
             adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
         });
