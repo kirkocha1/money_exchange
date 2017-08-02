@@ -58,7 +58,7 @@ public class TickRepository {
     }
 
     public Single<List<TickDb>> getCachedTicks() {
-        return getToolTypeList().flatMap(list -> Single.fromCallable(() -> ticksCache.getSubscribedTicks(list, list.size())));
+        return getToolTypeList().flatMap(list -> Single.fromCallable(() -> ticksCache.getSubscribedTicks(list)));
     }
 
     public Completable addNewTool(ToolType type) {

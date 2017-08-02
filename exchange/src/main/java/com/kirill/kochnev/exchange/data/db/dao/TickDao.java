@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.kirill.kochnev.exchange.data.db.models.TickDb;
-import com.kirill.kochnev.exchange.data.enums.ToolType;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface TickDao {
     List<TickDb> getTicksByToolType(String toolType);
 
 
-    @Query("SELECT * FROM ticks WHERE tool_type IN (:type) ORDER BY creation_date LIMIT :count")
+    @Query("SELECT * FROM ticks WHERE tool_type IN (:type) GROUP BY tool_type ORDER BY creation_date LIMIT :count")
     List<TickDb> getSubscribedTicks(List<String> type, int count);
 
     @Insert

@@ -53,11 +53,4 @@ public class TickUI {
     public String getBidAndAskFormated() {
         return bid.toEngineeringString() + "/" + ask.toEngineeringString();
     }
-
-    public void updateWithAnother(TickUI newModel) {
-        ask = newModel.getAsk();
-        bid = newModel.bid;
-        spread = newModel.getSpread();
-        type = newModel.getType();
-    }
 }

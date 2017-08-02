@@ -104,7 +104,7 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
 
     @Override
     public void recreateList(List<TickUI> ticks) {
-        adapter.replceWithNewList(ticks);
+        adapter.replaceWithNewList(ticks);
         list.post(() -> {
             list.setBlankVisibility(ticks == null);
         });

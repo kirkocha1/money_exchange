@@ -35,7 +35,7 @@
 
         <LinearLayout
             android:id="@+id/ask_bid_container"
-            android:layout_width="@dimen/central_column"
+            android:layout_width="@dimen/central_column_header"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
@@ -51,8 +51,9 @@
                     android:id="@+id/ask_title"
                     style="@style/ItalicTextStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="3dp"
+                    android:gravity="center"
                     android:text="ASK" />
 
                 <com.kirill.kochnev.exchange.presentation.views.components.SortItemView
@@ -64,7 +65,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/ItalicTextStyle"
+                style="@style/BoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/" />
@@ -80,8 +81,9 @@
                     android:id="@+id/bid_title"
                     style="@style/ItalicTextStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="3dp"
+                    android:gravity="center"
                     android:text="BID" />
 
                 <com.kirill.kochnev.exchange.presentation.views.components.SortItemView

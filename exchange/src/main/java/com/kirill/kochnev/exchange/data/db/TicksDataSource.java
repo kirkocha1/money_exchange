@@ -25,12 +25,12 @@ public class TicksDataSource {
         return dao.getTicksByToolType(type.toString());
     }
 
-    public List<TickDb> getSubscribedTicks(List<ToolType> types, int count) {
+    public List<TickDb> getSubscribedTicks(List<ToolType> types) {
         List<String> dbToolType = new ArrayList<>();
         for (ToolType type : types) {
             dbToolType.add(type.toString());
         }
-        return dao.getSubscribedTicks(dbToolType, count);
+        return dao.getSubscribedTicks(dbToolType, dbToolType.size());
     }
 
     public void putTicks(List<TickDb> tickDbs) {

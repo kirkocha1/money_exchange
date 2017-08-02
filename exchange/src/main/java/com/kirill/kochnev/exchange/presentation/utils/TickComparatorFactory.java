@@ -20,11 +20,11 @@ public class TickComparatorFactory {
         switch (fieldSort) {
             case ASK_COMPARATOR:
                 comparator = (tick1, tick2) -> isDesc ? resolveIfEquals(tick1, tick2, tick1.getAsk().compareTo(tick2.getAsk())) :
-                        revertResult(resolveIfEquals(tick1, tick2, Float.compare(tick1.getSpread(), tick2.getSpread())));
+                        revertResult(resolveIfEquals(tick1, tick2, tick1.getAsk().compareTo(tick2.getAsk())));
                 break;
             case BID_COMPARATOR:
                 comparator = (tick1, tick2) -> isDesc ? resolveIfEquals(tick1, tick2, tick1.getBid().compareTo(tick2.getBid())) :
-                        revertResult(resolveIfEquals(tick1, tick2, Float.compare(tick1.getSpread(), tick2.getSpread())));
+                        revertResult(resolveIfEquals(tick1, tick2, tick1.getBid().compareTo(tick2.getBid())));
                 break;
             case SPREAD_COMPARATOR:
                 comparator = (tick1, tick2) -> isDesc ? resolveIfEquals(tick1, tick2, Float.compare(tick1.getSpread(), tick2.getSpread()))
