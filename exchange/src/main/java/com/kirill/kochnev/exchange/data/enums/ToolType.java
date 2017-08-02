@@ -9,39 +9,46 @@ import com.google.gson.annotations.SerializedName;
 public enum ToolType {
 
     @SerializedName("EURUSD")
-    EURUSD("EUR/USD"),
+    EURUSD("EUR/USD", 1),
 
     @SerializedName("EURGBP")
-    EURGBP("EUR/GBP"),
+    EURGBP("EUR/GBP", 2),
 
     @SerializedName("USDJPY")
-    USDJPY("USD/JPY"),
+    USDJPY("USD/JPY", 3),
 
     @SerializedName("GBPUSD")
-    GBPUSD("GBP/USD"),
+    GBPUSD("GBP/USD", 4),
 
     @SerializedName("USDCHF")
-    USDCHF("USD/CHF"),
+    USDCHF("USD/CHF", 5),
 
     @SerializedName("USDCAD")
-    USDCAD("USD/CAD"),
+    USDCAD("USD/CAD", 6),
 
     @SerializedName("AUDUSD")
-    AUDUSD("AUD/USD"),
+    AUDUSD("AUD/USD", 7),
 
     @SerializedName("EURJPY")
-    EURJPY("EUR/JPY"),
+    EURJPY("EUR/JPY", 8),
 
     @SerializedName("EURCHF")
-    EURCHF("EUR/CHF");
+    EURCHF("EUR/CHF", 9);
 
     private String slashName;
+    private int order;
 
     public String getSlashName() {
         return slashName;
     }
 
-    ToolType(String slashName) {
-        this.slashName = slashName;
+    public int getOrder() {
+        return order;
     }
+
+    ToolType(String slashName, int order) {
+        this.slashName = slashName;
+        this.order = order;
+    }
+
 }

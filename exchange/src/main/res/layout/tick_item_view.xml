@@ -16,6 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="TOOL"
             android:gravity="center" />
 
         <TextView
@@ -23,10 +24,12 @@
             android:id="@+id/money_relation"
             android:layout_width="@dimen/central_column"
             android:layout_height="match_parent"
+            android:text="ASK/BID"
             android:gravity="center" />
 
         <TextView
             style="@style/BoldTextStyle"
+            android:text="SPREAD"
             android:id="@+id/spread"
             android:layout_width="0dp"
             android:layout_height="match_parent"

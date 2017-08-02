@@ -17,9 +17,11 @@ import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.presenters.TickListPresenter;
 import com.kirill.kochnev.exchange.presentation.utils.ErrorHandler;
+import com.kirill.kochnev.exchange.presentation.utils.TickComparatorFactory;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 import com.kirill.kochnev.exchange.presentation.views.adapter.TicksAdapter;
 import com.kirill.kochnev.exchange.presentation.views.components.ListWithBlankView;
+import com.kirill.kochnev.exchange.presentation.views.components.TickHeaderView;
 
 import java.util.List;
 
@@ -38,6 +40,8 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
 
     @BindView(R.id.list_view)
     ListWithBlankView list;
+
+    private TickHeaderView header;
 
     @Inject
     TickInteractor interactor;
@@ -72,7 +76,21 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        header = new TickHeaderView(getActivity());
+        header.setOnSpreadSortClickListner((v, isAsk) -> {
+            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
+        });
+        header.setAskSortListener((v, isAsk) -> {
+            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.ASK_COMPARATOR, isAsk));
+        });
+        header.setBidSortListener((v, isAsk) -> {
+            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.BID_COMPARATOR, isAsk));
+        });
+        header.setOnToolSortClickListner((v, isAsk) -> {
+            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
+        });
         adapter = new TicksAdapter();
+        list.setHeader(header);
         list.initList(adapter);
     }
 

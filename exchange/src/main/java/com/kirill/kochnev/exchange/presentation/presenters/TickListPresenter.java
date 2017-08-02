@@ -54,7 +54,6 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
                     }
                 }, e -> {
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
-
                     getViewState().showMessage("ERROR MESSAGE");
 
                 }));

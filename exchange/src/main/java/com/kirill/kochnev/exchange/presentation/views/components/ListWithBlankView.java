@@ -22,6 +22,9 @@ import butterknife.ButterKnife;
 
 public class ListWithBlankView extends FrameLayout {
 
+    @BindView(R.id.list_header)
+    FrameLayout header;
+
     @BindView(R.id.list)
     RecyclerView list;
 
@@ -53,5 +56,9 @@ public class ListWithBlankView extends FrameLayout {
     public void initList(RecyclerView.Adapter adapter) {
         list.setAdapter(adapter);
         setBlankVisibility(adapter.getItemCount() == 0);
+    }
+
+    public void setHeader(View view) {
+        header.addView(view);
     }
 }
