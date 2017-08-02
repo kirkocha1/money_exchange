@@ -59,6 +59,26 @@ public class TickHeaderView extends FrameLayout {
         initUi(context);
     }
 
+    public interface OnSortOrderListener {
+        void onChange(View v, boolean isAsk);
+    }
+
+    public void setOnSpreadSortClickListner(OnSortOrderListener listner) {
+        spreadSortListener = listner;
+    }
+
+    public void setOnToolSortClickListner(OnSortOrderListener listner) {
+        toolSortListener = listner;
+    }
+
+    public void setBidSortListener(OnSortOrderListener bidSortListener) {
+        this.bidSortListener = bidSortListener;
+    }
+
+    public void setAskSortListener(OnSortOrderListener askSortListener) {
+        this.askSortListener = askSortListener;
+    }
+
     private void initUi(Context context) {
         LayoutInflater.from(context).inflate(R.layout.header_list, this, true);
         ButterKnife.bind(this);
@@ -88,22 +108,6 @@ public class TickHeaderView extends FrameLayout {
                 spreadSortListener.onChange(v, spreadSort.isAsk());
             }
         });
-    }
-
-    public void setOnSpreadSortClickListner(OnSortOrderListener listner) {
-        spreadSortListener = listner;
-    }
-
-    public void setOnToolSortClickListner(OnSortOrderListener listner) {
-        toolSortListener = listner;
-    }
-
-    public void setBidSortListener(OnSortOrderListener bidSortListener) {
-        this.bidSortListener = bidSortListener;
-    }
-
-    public void setAskSortListener(OnSortOrderListener askSortListener) {
-        this.askSortListener = askSortListener;
     }
 
     private void setSpreadSortOrder(boolean isAsk) {
@@ -136,10 +140,6 @@ public class TickHeaderView extends FrameLayout {
         askSort.setVisibility(GONE);
         toolSort.setVisibility(VISIBLE);
         toolSort.setSortOrder(isAsk);
-    }
-
-    public interface OnSortOrderListener {
-        void onChange(View v, boolean isAsk);
     }
 
 }

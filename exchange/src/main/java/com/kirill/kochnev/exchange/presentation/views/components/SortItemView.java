@@ -37,11 +37,6 @@ public class SortItemView extends FrameLayout {
         initUi(context);
     }
 
-    private void initUi(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.sort_item, this, true);
-        ButterKnife.bind(this);
-    }
-
     public void setSortOrder(boolean isAsc) {
         this.isAsk = isAsc;
         descImage.setVisibility(isAsc ? GONE : VISIBLE);
@@ -50,5 +45,10 @@ public class SortItemView extends FrameLayout {
 
     public boolean isAsk() {
         return isAsk;
+    }
+
+    private void initUi(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.sort_item, this, true);
+        ButterKnife.bind(this);
     }
 }

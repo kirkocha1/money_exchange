@@ -39,6 +39,10 @@ public class TickTimer {
         }
     }
 
+    public interface TrigerUIListener {
+        void triger(List<TickUI> tickUIs);
+    }
+
     private void putFreshTicks(List<TickUI> tickUIs) {
         if (toolTickUi == null) {
             toolTickUi = new HashMap<>();
@@ -48,7 +52,5 @@ public class TickTimer {
         }
     }
 
-    public interface TrigerUIListener {
-        void triger(List<TickUI> tickUIs);
-    }
+
 }

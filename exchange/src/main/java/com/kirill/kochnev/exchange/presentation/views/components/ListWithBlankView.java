@@ -42,12 +42,6 @@ public class ListWithBlankView extends FrameLayout {
         init(context);
     }
 
-    private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.list_view, this, true);
-        ButterKnife.bind(this);
-        list.setLayoutManager(new LinearLayoutManager(context));
-    }
-
     public void setBlankVisibility(boolean isBlankVisible) {
         blank.setVisibility(isBlankVisible ? VISIBLE : GONE);
         list.setVisibility(isBlankVisible ? View.GONE : View.VISIBLE);
@@ -60,5 +54,11 @@ public class ListWithBlankView extends FrameLayout {
 
     public void setHeader(View view) {
         header.addView(view);
+    }
+
+    private void init(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.list_view, this, true);
+        ButterKnife.bind(this);
+        list.setLayoutManager(new LinearLayoutManager(context));
     }
 }

@@ -1,7 +1,5 @@
 package com.kirill.kochnev.exchange.data.db;
 
-import android.arch.persistence.room.Query;
-
 import com.kirill.kochnev.exchange.data.db.dao.TickDao;
 import com.kirill.kochnev.exchange.data.db.models.TickDb;
 import com.kirill.kochnev.exchange.data.enums.ToolType;

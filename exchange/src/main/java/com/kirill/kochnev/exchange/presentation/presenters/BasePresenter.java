@@ -10,12 +10,12 @@ import io.reactivex.disposables.Disposable;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
-public class BasePresenter<V extends MvpView> extends MvpPresenter<V> {
+class BasePresenter<V extends MvpView> extends MvpPresenter<V> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    public void addToCompositeDisposable(Disposable disposable) {
+    void addToCompositeDisposable(Disposable disposable) {
         compositeDisposable.add(disposable);
     }
 
@@ -25,7 +25,7 @@ public class BasePresenter<V extends MvpView> extends MvpPresenter<V> {
         super.onDestroy();
     }
 
-    public void clearDisposable() {
+    void clearDisposable() {
         compositeDisposable.clear();
     }
 }

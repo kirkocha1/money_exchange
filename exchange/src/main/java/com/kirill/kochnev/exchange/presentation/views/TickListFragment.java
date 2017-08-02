@@ -78,16 +78,16 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
         ButterKnife.bind(this, view);
         header = new TickHeaderView(getActivity());
         header.setOnSpreadSortClickListner((v, isAsk) -> {
-            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
         });
         header.setAskSortListener((v, isAsk) -> {
-            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.ASK_COMPARATOR, isAsk));
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.ASK_COMPARATOR, isAsk));
         });
         header.setBidSortListener((v, isAsk) -> {
-            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.BID_COMPARATOR, isAsk));
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.BID_COMPARATOR, isAsk));
         });
         header.setOnToolSortClickListner((v, isAsk) -> {
-            adapter.setComparator(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
         });
         adapter = new TicksAdapter();
         list.setHeader(header);

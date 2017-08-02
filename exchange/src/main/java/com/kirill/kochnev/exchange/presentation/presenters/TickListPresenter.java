@@ -41,7 +41,6 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
         }));
     }
 
-
     private void subscribeOnStream() {
         clearDisposable();
         addToCompositeDisposable(interactor.getLiveTicks()

@@ -44,40 +44,12 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
         notifyDataSetChanged();
     }
 
-    private void replaceWithLatest(TreeSet<TickUI> treeSet, List<TickUI> newList) {
-        if (treeSet != null && newList != null) {
-            List<TickUI> newElements = new ArrayList<>();
-            Iterator<TickUI> iterator = treeSet.iterator();
-            while (iterator.hasNext()) {
-                TickUI tickUI = iterator.next();
-                for (TickUI newTick : newList) {
-                    if (tickUI.getType() == newTick.getType()) {
-                        iterator.remove();
-                        newElements.add(newTick);
-                        break;
-                    }
-                }
-            }
-            treeSet.addAll(newElements);
-        }
-    }
-
-    public void setComparator(Comparator<TickUI> comparator) {
+    public void changeListOrder(Comparator<TickUI> comparator) {
         this.comparator = comparator;
         TreeSet<TickUI> treeSet = new TreeSet<>(comparator);
         treeSet.addAll(models);
         models = treeSet;
         notifyDataSetChanged();
-    }
-
-    private TickUI findByPosition(int position) {
-        TickUI result = null;
-        Iterator<TickUI> iterator = this.models.iterator();
-        while (position >= 0 && iterator.hasNext()) {
-            result = iterator.next();
-            position--;
-        }
-        return result;
     }
 
     @Override
@@ -102,6 +74,34 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
         return models == null ? 0 : models.size();
     }
 
+    private void replaceWithLatest(TreeSet<TickUI> treeSet, List<TickUI> newList) {
+        if (treeSet != null && newList != null) {
+            List<TickUI> newElements = new ArrayList<>();
+            Iterator<TickUI> iterator = treeSet.iterator();
+            while (iterator.hasNext()) {
+                TickUI tickUI = iterator.next();
+                for (TickUI newTick : newList) {
+                    if (tickUI.getType() == newTick.getType()) {
+                        iterator.remove();
+                        newElements.add(newTick);
+                        break;
+                    }
+                }
+            }
+            treeSet.addAll(newElements);
+        }
+    }
+
+    private TickUI findByPosition(int position) {
+        TickUI result = null;
+        Iterator<TickUI> iterator = this.models.iterator();
+        while (position >= 0 && iterator.hasNext()) {
+            result = iterator.next();
+            position--;
+        }
+        return result;
+    }
+
     class TickViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.exchange_pair)
@@ -113,7 +113,7 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
         @BindView(R.id.money_relation)
         TextView relation;
 
-        public TickViewHolder(View itemView) {
+        TickViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
