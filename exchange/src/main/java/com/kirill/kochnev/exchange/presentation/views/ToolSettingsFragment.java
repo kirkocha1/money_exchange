@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 
 public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolSettingsView {
 
-    private static final String TAG = "ToolSettingsFragment";
+    public static final String TAG = "ToolSettingsFragment";
 
     @Inject
     TickInteractor interactor;

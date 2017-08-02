@@ -46,14 +46,15 @@ public class MainActivity extends AppCompatActivity {
                 AnimationHelper.rotateHideAnimation(this, back, false);
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                        .addToBackStack("Settings")
-                        .replace(R.id.container, new ToolSettingsFragment())
+                        .addToBackStack(ToolSettingsFragment.TAG)
+                        .hide(getSupportFragmentManager().findFragmentByTag(TickListFragment.TAG))
+                        .add(R.id.container, new ToolSettingsFragment())
                         .commit();
             }
         });
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                .replace(R.id.container, new TickListFragment())
+                .replace(R.id.container, new TickListFragment(), TickListFragment.TAG)
                 .commit();
     }
 

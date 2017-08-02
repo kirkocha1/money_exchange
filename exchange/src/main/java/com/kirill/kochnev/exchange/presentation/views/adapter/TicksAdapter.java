@@ -26,9 +26,12 @@ import butterknife.ButterKnife;
 public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHolder> {
 
     private TreeSet<TickUI> models;
-    private Comparator<TickUI> comparator = TickComparatorFactory.create(TickComparatorFactory.DEFAULT, false);
+    private Comparator<TickUI> comparator;
 
     public void replaceWithNewList(List<TickUI> models) {
+        if (comparator == null) {
+            comparator = TickComparatorFactory.create(TickComparatorFactory.DEFAULT, false);
+        }
         this.models = new TreeSet<>(comparator);
         if (models != null) {
             this.models.addAll(models);
@@ -46,7 +49,7 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
 
     public void changeListOrder(Comparator<TickUI> comparator) {
         this.comparator = comparator;
-        TreeSet<TickUI> treeSet = new TreeSet<>(comparator);
+        TreeSet<TickUI> treeSet = new TreeSet<>(this.comparator);
         treeSet.addAll(models);
         models = treeSet;
         notifyDataSetChanged();

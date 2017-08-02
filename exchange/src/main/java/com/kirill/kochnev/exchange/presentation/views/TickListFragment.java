@@ -2,6 +2,7 @@ package com.kirill.kochnev.exchange.presentation.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,29 +70,8 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tick_list, container, false);
+        init(v);
         return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        header = new TickHeaderView(getActivity());
-        header.setOnSpreadSortClickListner((v, isAsk) -> {
-            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
-        });
-        header.setAskSortListener((v, isAsk) -> {
-            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.ASK_COMPARATOR, isAsk));
-        });
-        header.setBidSortListener((v, isAsk) -> {
-            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.BID_COMPARATOR, isAsk));
-        });
-        header.setOnToolSortClickListner((v, isAsk) -> {
-            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
-        });
-        adapter = new TicksAdapter();
-        list.setHeader(header);
-        list.initList(adapter);
     }
 
     @Override
@@ -116,4 +96,25 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
             presenter.retry();
         });
     }
+
+    private void init(View view) {
+        ButterKnife.bind(this, view);
+        header = new TickHeaderView(getActivity());
+        header.setOnSpreadSortClickListner((v, isAsk) -> {
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.SPREAD_COMPARATOR, isAsk));
+        });
+        header.setAskSortListener((v, isAsk) -> {
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.ASK_COMPARATOR, isAsk));
+        });
+        header.setBidSortListener((v, isAsk) -> {
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.BID_COMPARATOR, isAsk));
+        });
+        header.setOnToolSortClickListner((v, isAsk) -> {
+            adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
+        });
+        adapter = new TicksAdapter();
+        list.setHeader(header);
+        list.initList(adapter);
+    }
+
 }
