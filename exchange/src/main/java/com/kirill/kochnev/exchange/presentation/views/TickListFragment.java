@@ -17,6 +17,7 @@ import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.presenters.TickListPresenter;
 import com.kirill.kochnev.exchange.presentation.utils.ErrorHandler;
+import com.kirill.kochnev.exchange.presentation.utils.FragmentNavigator;
 import com.kirill.kochnev.exchange.presentation.utils.TickComparatorFactory;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 import com.kirill.kochnev.exchange.presentation.views.adapter.TicksAdapter;
@@ -47,6 +48,9 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     TickInteractor interactor;
 
     @Inject
+    FragmentNavigator navigator;
+
+    @Inject
     TickTimer tickTimer;
 
     @InjectPresenter
@@ -61,6 +65,18 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     public void onCreate(Bundle savedInstanceState) {
         ExchangeApplication.getComponent().inject(this);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        navigator.setManager(getFragmentManager());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        navigator.setManager(null);
     }
 
     @Nullable
@@ -110,6 +126,9 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
             adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
         });
         adapter = new TicksAdapter();
+        adapter.setListener( (v, tool) -> {
+            navigator.navigateTo(FragmentNavigator.TICK_HISITORY_SCREEN, tool, null);
+        });
         list.setHeader(header);
         list.initList(adapter);
     }

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Kirill Kochnev on 27.07.17.
  */
 
-public class TickMapper {
+public class TickDbMapper {
 
     public TickDb map(Tick tick) {
         TickDb tickDb = new TickDb();

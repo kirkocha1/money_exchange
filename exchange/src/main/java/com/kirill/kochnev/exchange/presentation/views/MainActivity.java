@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             title.setText(getString(R.string.ticks_title));
         }));
         settings.setOnClickListener(v ->
-                navigator.navigateTo(FragmentNavigator.SETTINGS_SCREEN, () -> {
+                navigator.navigateTo(FragmentNavigator.SETTINGS_SCREEN, null, () -> {
                     AnimationHelper.rotateHideAnimation(this, back, false);
                     title.setText(getString(R.string.setting_title));
                 }));

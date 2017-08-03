@@ -5,6 +5,7 @@ import com.kirill.kochnev.exchange.di.modules.InteractorModule;
 import com.kirill.kochnev.exchange.di.modules.NetworkModule;
 import com.kirill.kochnev.exchange.di.modules.RepositoryModule;
 import com.kirill.kochnev.exchange.di.modules.UtilsModule;
+import com.kirill.kochnev.exchange.presentation.views.HistoryChartFragment;
 import com.kirill.kochnev.exchange.presentation.views.MainActivity;
 import com.kirill.kochnev.exchange.presentation.views.TickListFragment;
 import com.kirill.kochnev.exchange.presentation.views.ToolSettingsFragment;
@@ -26,4 +27,6 @@ public interface AppComponent {
     void inject(TickListFragment fragment);
 
     void inject(ToolSettingsFragment fragment);
+
+    void inject(HistoryChartFragment fragment);
 }

@@ -1,5 +1,6 @@
 package com.kirill.kochnev.exchange.presentation.views.adapter;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kirill.kochnev.exchange.R;
+import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.models.TickUI;
 import com.kirill.kochnev.exchange.presentation.utils.TickComparatorFactory;
 
@@ -27,6 +29,11 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
 
     private TreeSet<TickUI> models;
     private Comparator<TickUI> comparator;
+    private OnTickClickListener listener;
+
+    public interface OnTickClickListener {
+        void onTickClick(View view, ToolType type);
+    }
 
     public void replaceWithNewList(List<TickUI> models) {
         if (comparator == null) {
@@ -68,13 +75,23 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
                 holder.pair.setText(tickUI.getType().getSlashName());
                 holder.spread.setText(tickUI.getSpread() + "");
                 holder.relation.setText(tickUI.getBidAndAskFormated());
+                holder.container.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onTickClick(v, tickUI.getType());
+                    }
+                });
             }
+
         }
     }
 
     @Override
     public int getItemCount() {
         return models == null ? 0 : models.size();
+    }
+
+    public void setListener(OnTickClickListener listener) {
+        this.listener = listener;
     }
 
     private void replaceWithLatest(TreeSet<TickUI> treeSet, List<TickUI> newList) {
@@ -106,6 +123,9 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
     }
 
     class TickViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tick_container)
+        CardView container;
 
         @BindView(R.id.exchange_pair)
         TextView pair;

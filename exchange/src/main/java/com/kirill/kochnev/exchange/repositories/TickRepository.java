@@ -6,8 +6,9 @@ import com.kirill.kochnev.exchange.data.db.TicksDataSource;
 import com.kirill.kochnev.exchange.data.db.models.TickDb;
 import com.kirill.kochnev.exchange.data.enums.MessageType;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
-import com.kirill.kochnev.exchange.data.mapper.TickMapper;
+import com.kirill.kochnev.exchange.data.mapper.TickDbMapper;
 import com.kirill.kochnev.exchange.data.network.models.CommonModel;
+import com.kirill.kochnev.exchange.data.network.models.Tick;
 import com.kirill.kochnev.exchange.data.network.parser.PacketManager;
 import com.kirill.kochnev.exchange.presentation.utils.PrefManager;
 import com.kirill.kochnev.websocket.RxSocketWrapper;
@@ -30,10 +31,10 @@ public class TickRepository {
     private RxSocketWrapper socket;
     private TicksDataSource ticksCache;
     private PacketManager manager;
-    private TickMapper mapper;
+    private TickDbMapper mapper;
     private PrefManager preferenceManager;
 
-    public TickRepository(RxSocketWrapper socket, TicksDataSource ticksCache, PacketManager manager, TickMapper mapper, PrefManager preferenceManager) {
+    public TickRepository(RxSocketWrapper socket, TicksDataSource ticksCache, PacketManager manager, TickDbMapper mapper, PrefManager preferenceManager) {
         this.socket = socket;
         this.ticksCache = ticksCache;
         this.manager = manager;
@@ -55,6 +56,28 @@ public class TickRepository {
             }
             return result;
         });
+    }
+
+    public Observable<List<TickDb>> getFilteredTicks(ToolType type) {
+        return getTicks().map(commonModel -> {
+            List<TickDb> result = new ArrayList<>();
+            List<Tick> ticks = commonModel.getList();
+            for (Tick tick : ticks) {
+                if (tick.toolType.equals(type)) {
+                    result.add(mapper.map(tick));
+                }
+            }
+            return result;
+        });
+//                .flatMapIterable(ticks -> ticks)
+//                .filter(tick -> tick.toolType.equals(type))
+//                .toList()
+//                .toObservable()
+//                .map(mapper::mapList);
+    }
+
+    public Single<List<TickDb>> getCachedTicksByToolType(ToolType type) {
+        return Single.fromCallable(() -> ticksCache.getTicksByToolType(type));
     }
 
     public Single<List<TickDb>> getCachedTicks() {

@@ -28,7 +28,6 @@ public class TickInteractor {
 
     public Single<List<TickUI>> getCachedTicks() {
         return repository.getCachedTicks().map(mapper::mapToUiList);
-
     }
 
     public Observable<CommonUiModel> getLiveTicks() {

@@ -1,5 +1,6 @@
 package com.kirill.kochnev.exchange.presentation.interfaces;
 
+import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 
 
-public interface ITickListView extends IMessageView {
+public interface ITickListView extends MvpView, IMessageView {
 
     @StateStrategyType(SingleStateStrategy.class)
     void recreateList(List<TickUI> list);

@@ -3,6 +3,8 @@ package com.kirill.kochnev.exchange.presentation.utils;
 import android.support.v4.app.FragmentManager;
 
 import com.kirill.kochnev.exchange.R;
+import com.kirill.kochnev.exchange.data.enums.ToolType;
+import com.kirill.kochnev.exchange.presentation.views.HistoryChartFragment;
 import com.kirill.kochnev.exchange.presentation.views.TickListFragment;
 import com.kirill.kochnev.exchange.presentation.views.ToolSettingsFragment;
 
@@ -23,9 +25,11 @@ public class FragmentNavigator {
         this.manager = manager;
     }
 
-    public void navigateTo(String screenName, OnNavigateAction action) {
+    public void navigateTo(String screenName, Object data, OnNavigateAction action) {
         switch (screenName) {
             case TICK_HISITORY_SCREEN:
+                state = ScreenState.HISTORY;
+                moveToHistoryScreen(data);
                 break;
             case TICKS_SCREEN:
                 state = ScreenState.TICKS;
@@ -40,7 +44,7 @@ public class FragmentNavigator {
     }
 
     public void navigateTo(String screenName) {
-        navigateTo(screenName, null);
+        navigateTo(screenName, null, null);
     }
 
     public void back(OnNavigateAction action) {
@@ -52,6 +56,16 @@ public class FragmentNavigator {
         }
     }
 
+    private void moveToHistoryScreen(Object data) {
+        if (manager != null && data instanceof ToolType) {
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
+                    .addToBackStack(TICK_HISITORY_SCREEN)
+                    .add(R.id.container, HistoryChartFragment.createFragment((ToolType) data))
+                    .commit();
+        }
+    }
+
     private void moveToTicksScreen(OnNavigateAction action) {
         if (manager != null) {
             if (action != null) {
@@ -59,7 +73,7 @@ public class FragmentNavigator {
             }
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                    .replace(R.id.container, new TickListFragment(), TickListFragment.TAG)
+                    .replace(R.id.container, new TickListFragment(), TICKS_SCREEN)
                     .commit();
         }
     }
@@ -72,8 +86,7 @@ public class FragmentNavigator {
             if (state.equals(ScreenState.SETTINGS)) {
                 manager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                        .addToBackStack(ToolSettingsFragment.TAG)
-                        .hide(manager.findFragmentByTag(TickListFragment.TAG))
+                        .addToBackStack(SETTINGS_SCREEN)
                         .add(R.id.container, new ToolSettingsFragment())
                         .commit();
             }
@@ -86,8 +99,9 @@ public class FragmentNavigator {
         void beforeNavigate();
     }
 
-    enum ScreenState {
+    private enum ScreenState {
         TICKS,
-        SETTINGS
+        SETTINGS,
+        HISTORY
     }
 }

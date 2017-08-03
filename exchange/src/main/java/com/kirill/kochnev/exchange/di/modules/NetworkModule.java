@@ -1,6 +1,6 @@
 package com.kirill.kochnev.exchange.di.modules;
 
-import com.kirill.kochnev.exchange.data.mapper.TickMapper;
+import com.kirill.kochnev.exchange.data.mapper.TickDbMapper;
 import com.kirill.kochnev.exchange.data.network.parser.PacketManager;
 import com.kirill.kochnev.websocket.RxSocketWrapper;
 import com.kirill.kochnev.websocket.Socket;
@@ -32,8 +32,8 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public TickMapper provideTickMapper() {
-        return new TickMapper();
+    public TickDbMapper provideTickMapper() {
+        return new TickDbMapper();
     }
 
 

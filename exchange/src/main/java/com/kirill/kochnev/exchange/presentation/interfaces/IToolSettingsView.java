@@ -1,9 +1,9 @@
 package com.kirill.kochnev.exchange.presentation.interfaces;
 
+import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
-import com.kirill.kochnev.exchange.domain.models.TickUI;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @StateStrategyType(SkipStrategy.class)
-public interface IToolSettingsView extends IMessageView {
+public interface IToolSettingsView extends MvpView, IMessageView {
 
     void droptToolType(ToolType type);
 

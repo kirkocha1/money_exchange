@@ -15,9 +15,8 @@ import java.util.List;
 @Dao
 public interface TickDao {
 
-    @Query("SELECT * FROM ticks WHERE tool_type = :toolType")
+    @Query("SELECT * FROM ticks WHERE tool_type = :toolType ORDER BY creation_date LIMIT 200")
     List<TickDb> getTicksByToolType(String toolType);
-
 
     @Query("SELECT * FROM ticks WHERE tool_type IN (:type) GROUP BY tool_type ORDER BY creation_date LIMIT :count")
     List<TickDb> getSubscribedTicks(List<String> type, int count);

@@ -1,9 +1,7 @@
 package com.kirill.kochnev.exchange.di.modules;
 
-import android.preference.PreferenceManager;
-
 import com.kirill.kochnev.exchange.data.db.TicksDataSource;
-import com.kirill.kochnev.exchange.data.mapper.TickMapper;
+import com.kirill.kochnev.exchange.data.mapper.TickDbMapper;
 import com.kirill.kochnev.exchange.data.network.parser.PacketManager;
 import com.kirill.kochnev.exchange.presentation.utils.PrefManager;
 import com.kirill.kochnev.exchange.repositories.TickRepository;
@@ -23,7 +21,7 @@ public class RepositoryModule {
 
     @Singleton
     @Provides
-    public TickRepository provideTickRepository(TicksDataSource cacheSource, RxSocketWrapper socketWrapper, TickMapper mapper, PacketManager manager, PrefManager preferenceManager) {
+    public TickRepository provideTickRepository(TicksDataSource cacheSource, RxSocketWrapper socketWrapper, TickDbMapper mapper, PacketManager manager, PrefManager preferenceManager) {
         return new TickRepository(socketWrapper, cacheSource, manager, mapper, preferenceManager);
     }
 }
