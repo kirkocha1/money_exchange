@@ -30,9 +30,14 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
     private TreeSet<TickUI> models;
     private Comparator<TickUI> comparator;
     private OnTickClickListener listener;
+    private OnDeleteTickListener longClickListener;
 
     public interface OnTickClickListener {
         void onTickClick(View view, ToolType type);
+    }
+
+    public interface OnDeleteTickListener {
+        void onDeleteClick(View view, ToolType type);
     }
 
     public void replaceWithNewList(List<TickUI> models) {
@@ -80,9 +85,19 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
                         listener.onTickClick(v, tickUI.getType());
                     }
                 });
+                holder.container.setOnLongClickListener(v -> {
+                    if (longClickListener != null) {
+                        longClickListener.onDeleteClick(v, tickUI.getType());
+                    }
+                    return false;
+                });
             }
 
         }
+    }
+
+    public void setLongClickListener(OnDeleteTickListener longClickListener) {
+        this.longClickListener = longClickListener;
     }
 
     @Override
@@ -90,7 +105,7 @@ public class TicksAdapter extends RecyclerView.Adapter<TicksAdapter.TickViewHold
         return models == null ? 0 : models.size();
     }
 
-    public void setListener(OnTickClickListener listener) {
+    public void setTickClickListener(OnTickClickListener listener) {
         this.listener = listener;
     }
 

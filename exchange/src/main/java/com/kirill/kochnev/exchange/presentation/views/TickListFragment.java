@@ -2,6 +2,7 @@ package com.kirill.kochnev.exchange.presentation.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,8 +118,18 @@ public class TickListFragment extends BaseActionBarFragment implements ITickList
             adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
         });
         adapter = new TicksAdapter();
-        adapter.setListener((v, tool) -> {
+        adapter.setTickClickListener((v, tool) -> {
             navigator.navigateTo(FragmentNavigator.TICK_HISITORY_SCREEN, tool, null);
+        });
+        adapter.setLongClickListener((v, type) -> {
+            new AlertDialog.Builder(getContext())
+                    .setPositiveButton(R.string.yes, (dialog, which) -> {
+                        presenter.onLongClick(type);
+                        dialog.dismiss();
+                    })
+                    .setMessage(R.string.delete_question)
+                    .create()
+                    .show();
         });
         list.setHeader(header);
         list.initList(adapter);

@@ -4,5 +4,7 @@
     <string name="retry">retry</string>
     <string name="setting_title">Settings</string>
     <string name="ticks_title">Exchange course</string>
-
+    <string name="yes">Yes</string>
+    <string name="no">no</string>
+    <string name="delete_question">Do you want to delete tick?</string>
 </resources>

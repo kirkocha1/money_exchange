@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.kirill.kochnev.exchange.data.enums.MessageType;
+import com.kirill.kochnev.exchange.data.enums.ToolType;
 import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
 import com.kirill.kochnev.exchange.presentation.interfaces.IRetry;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
@@ -73,6 +74,14 @@ public class TickListPresenter extends BasePresenter<ITickListView> implements I
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
                     getViewState().showMessage("ERROR MESSAGE");
                 }));
+    }
+
+    public void onLongClick(ToolType toolType) {
+        interactor.changeNotification(toolType, false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                }, e -> Log.e(TAG, e.getMessage()));
     }
 
     @Override
