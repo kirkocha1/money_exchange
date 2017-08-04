@@ -11,10 +11,13 @@ import java.util.List;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
+/**
+ * interface for controlling action bar of activity
+ */
 @StateStrategyType(SkipStrategy.class)
 public interface IToolSettingsView extends MvpView, IMessageView {
 
-    void droptToolType(ToolType type);
+    void dropToolType(ToolType type);
 
     void invalidateToolTypeList(List<ToolType> toolTypes);
 

@@ -10,9 +10,11 @@ import com.kirill.kochnev.exchange.data.enums.MessageType;
 import com.kirill.kochnev.exchange.data.network.models.CommonModel;
 import com.kirill.kochnev.exchange.data.network.models.SubList;
 import com.kirill.kochnev.exchange.data.network.models.SubscribtionResponse;
+import com.kirill.kochnev.websocket.DisconnectResponse;
 
 import java.lang.reflect.Type;
 
+import static com.kirill.kochnev.websocket.DisconnectResponse.DISCONNECTED_MESSAGE;
 import static com.kirill.kochnev.websocket.RxSocketWrapper.CONNECTED_MESSAGE;
 
 /**
@@ -30,8 +32,17 @@ public class PacketManager {
     public CommonModel parse(String rawJson) {
         if (rawJson.equals(CONNECTED_MESSAGE)) {
             return new CommonModel(MessageType.CONNECTED);
+        } else if (rawJson.contains(DISCONNECTED_MESSAGE)) {
+            return buildDisconnectCommonModel(rawJson);
         }
         return gson.fromJson(rawJson, CommonModel.class);
+    }
+
+    private CommonModel buildDisconnectCommonModel(String rawJson) {
+        CommonModel model = new CommonModel(MessageType.DISCONNECTED);
+        DisconnectResponse object = gson.fromJson(rawJson, DisconnectResponse.class);
+        model.setErrorMessage("Disconnected due to " + object.getDescription() + " code: " + object.getCode());
+        return model;
     }
 
     private class BaseModelDeserializer implements JsonDeserializer<CommonModel> {

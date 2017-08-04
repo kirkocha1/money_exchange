@@ -13,6 +13,9 @@ import java.util.List;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
+/**
+ * for mapping {@link TickDb} and {@link Tick}
+ */
 public class TickUiMapper {
 
     public TickUI map(TickDb tickDb) {

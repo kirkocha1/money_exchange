@@ -1,8 +1,7 @@
 package com.kirill.kochnev.exchange.domain.models;
 
-import com.github.mikephil.charting.data.Entry;
+import com.jjoe64.graphview.series.DataPoint;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,37 +14,31 @@ public class AskBidPointsSet {
 
     private List<Point> bidPoints;
 
-    private List<Entry> askEntryPoints;
+    private DataPoint[] asks;
 
-    private List<Entry> bidEntryPoints;
+    private DataPoint[] bids;
 
     public AskBidPointsSet(List<Point> askPoints, List<Point> bidPoints) {
         this.askPoints = askPoints;
         this.bidPoints = bidPoints;
-        askEntryPoints = mapToEntries(askPoints);
-        bidEntryPoints = mapToEntries(bidPoints);
+        asks = mapToMass(askPoints);
+        bids = mapToMass(bidPoints);
     }
 
-    public List<Point> getAskPoints() {
-        return askPoints;
+    public DataPoint[] getAsks() {
+        return asks;
     }
 
-    public List<Point> getBidPoints() {
-        return bidPoints;
+    public DataPoint[] getBids() {
+        return bids;
     }
 
-    public List<Entry> getAskEntries() {
-        return askEntryPoints;
-    }
-
-    public List<Entry> getBidEntries() {
-        return bidEntryPoints;
-    }
-
-    private List<Entry> mapToEntries(List<Point> points) {
-        List<Entry> entries = new ArrayList<>();
+    private DataPoint[] mapToMass(List<Point> points) {
+        DataPoint[] entries = new DataPoint[points.size()];
+        int i = 0;
         for (Point point : points) {
-            entries.add(new Entry(points.indexOf(point), point.getVal().floatValue()));
+            entries[i] = new DataPoint(point.getDate(), point.getVal().doubleValue());
+            i++;
         }
         return entries;
     }

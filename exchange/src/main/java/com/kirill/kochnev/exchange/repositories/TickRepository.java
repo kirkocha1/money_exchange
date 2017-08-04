@@ -24,6 +24,9 @@ import io.reactivex.Single;
  * Created by Kirill Kochnev on 27.07.17.
  */
 
+/**
+ * Repository class for data access
+ */
 public class TickRepository {
     private static final String SUBSCRIBE_COMMAND = "SUBSCRIBE: ";
     private static final String UNSUBSCRIBE_COMMAND = "UNSUBSCRIBE: ";
@@ -42,6 +45,10 @@ public class TickRepository {
         this.preferenceManager = preferenceManager;
     }
 
+
+    /**
+     * @return {@link Observable of live tick streaming}
+     */
     public Observable<CommonModel> getTicks() {
         return socket.getSocketObservable().map(rawResponse -> {
             CommonModel result = manager.parse(rawResponse);
@@ -49,6 +56,8 @@ public class TickRepository {
             if (result.getMessageType().equals(MessageType.CONNECTED)) {
                 Log.e(TAG, "start restoring");
                 restoreToolsSubscribtion();
+            } else if (result.getMessageType().equals(MessageType.DISCONNECTED)) {
+                throw new Exception(result.getErrorMessage());
             } else {
                 if (!result.isEmptyList()) {
                     ticksCache.putTicks(mapper.mapList(result.getList()));
@@ -58,6 +67,12 @@ public class TickRepository {
         });
     }
 
+    /**
+     * Methods use for chart plotting
+     *
+     * @param type pair
+     * @return return {@link Observable which emits filtered data by filter}
+     */
     public Observable<List<TickDb>> getFilteredTicks(ToolType type) {
         return getTicks().map(commonModel -> {
             List<TickDb> result = new ArrayList<>();
@@ -68,32 +83,53 @@ public class TickRepository {
                 }
             }
             return result;
-        });
-//                .flatMapIterable(ticks -> ticks)
-//                .filter(tick -> tick.toolType.equals(type))
-//                .toList()
-//                .toObservable()
-//                .map(mapper::mapList);
+        }).filter(tickDbs -> tickDbs.size() != 0);
     }
 
+    /**
+     * @param type pair
+     * @return {@link Single} which emits previous data for chart filtered by type
+     */
     public Single<List<TickDb>> getCachedTicksByToolType(ToolType type) {
         return Single.fromCallable(() -> ticksCache.getTicksByToolType(type));
     }
 
+    /**
+     * @return {@link Single} the latest tick for each tooltype registered
+     */
     public Single<List<TickDb>> getCachedTicks() {
         return getToolTypeList().flatMap(list -> Single.fromCallable(() -> ticksCache.getSubscribedTicks(list)));
     }
 
+
+    /**
+     * Register new ToolType
+     *
+     * @param type exchange pair
+     * @return {@link Completable}
+     */
     public Completable addNewTool(ToolType type) {
         return socket.sendMessageAsComplitable(SUBSCRIBE_COMMAND + type.toString())
                 .andThen(Completable.fromAction(() -> preferenceManager.putBoolean(type.toString(), true)));
     }
 
+
+    /**
+     * UnRegister new ToolType
+     *
+     * @param type exchange pair
+     * @return {@link Completable}
+     */
     public Completable deleteNewTool(ToolType type) {
         return socket.sendMessageAsComplitable(UNSUBSCRIBE_COMMAND + type.toString())
-                .andThen(Completable.fromAction(() -> preferenceManager.putBoolean(type.toString(), false)));
+                .andThen(Completable.fromAction(() -> ticksCache.deleteAllTicksByToolType(type))
+                        .andThen(Completable.fromAction(() -> preferenceManager.putBoolean(type.toString(), false))));
     }
 
+
+    /**
+     * @return all registered tooltypes
+     */
     public Single<List<ToolType>> getToolTypeList() {
         return Single.fromCallable(() -> {
             List<ToolType> result = new ArrayList<>();
@@ -106,8 +142,23 @@ public class TickRepository {
         });
     }
 
+    /**
+     * restart socket
+     *
+     * @return
+     */
     public Completable restartStream() {
         return socket.restart();
+    }
+
+
+    /**
+     * disconnect from socket
+     *
+     * @return
+     */
+    public Completable disconnecteFromSocket() {
+        return socket.disconnect();
     }
 
     private void restoreToolsSubscribtion() throws Exception {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.kirill.kochnev.exchange.ExchangeApplication;
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
-public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolSettingsView {
+public class ToolSettingsFragment extends BaseActionBarFragment implements IToolSettingsView {
 
     public static final String TAG = "ToolSettingsFragment";
 
@@ -57,6 +56,13 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setTitle(getString(R.string.setting_title));
+        hideBackButton(false);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,13 +81,13 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
     }
 
     @Override
-    public void droptToolType(ToolType type) {
+    public void dropToolType(ToolType type) {
         adapter.uncheckTool(type);
     }
 
     @Override
     public void showMessage(String message) {
-        new ErrorHandler().showSnackBar(list, message);
+        ErrorHandler.showSnackBar(list, message);
     }
 
     private void init(View view) {
@@ -91,4 +97,5 @@ public class ToolSettingsFragment extends MvpAppCompatFragment implements IToolS
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         list.setAdapter(adapter);
     }
+
 }

@@ -8,6 +8,9 @@ import java.util.Comparator;
  * Created by kirill on 02.08.17.
  */
 
+/**
+ * Factory class for sorting data used for data sorting in {@link com.kirill.kochnev.exchange.presentation.views.adapter.TicksAdapter}
+ */
 public class TickComparatorFactory {
 
     public static final String ASK_COMPARATOR = "ASK";
@@ -15,6 +18,13 @@ public class TickComparatorFactory {
     public static final String BID_COMPARATOR = "BID";
     public static final String DEFAULT = "tool";
 
+
+    /**
+     *
+     * @param fieldSort
+     * @param isDesc
+     * @return new instance of comparator
+     */
     public static Comparator<TickUI> create(String fieldSort, boolean isDesc) {
         Comparator<TickUI> comparator;
         switch (fieldSort) {

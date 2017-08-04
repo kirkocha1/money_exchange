@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.jjoe64.graphview.GraphView;
 import com.kirill.kochnev.exchange.ExchangeApplication;
 import com.kirill.kochnev.exchange.R;
 import com.kirill.kochnev.exchange.data.enums.ToolType;
@@ -19,8 +16,9 @@ import com.kirill.kochnev.exchange.domain.interactors.HistoryInteractor;
 import com.kirill.kochnev.exchange.domain.models.AskBidPointsSet;
 import com.kirill.kochnev.exchange.presentation.interfaces.IHistoryChartView;
 import com.kirill.kochnev.exchange.presentation.presenters.HistoryChartPresenter;
+import com.kirill.kochnev.exchange.presentation.utils.ErrorHandler;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
-import com.kirill.kochnev.exchange.presentation.views.charts.ChartRenderer;
+import com.kirill.kochnev.exchange.presentation.views.charts.GraphRenderer;
 
 import javax.inject.Inject;
 
@@ -31,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by kirill on 02.08.17.
  */
 
-public class HistoryChartFragment extends MvpAppCompatFragment implements IHistoryChartView {
+public class HistoryChartFragment extends BaseActionBarFragment implements IHistoryChartView {
 
     public static final String TOOL_TYPE = "tool_type";
 
@@ -43,10 +41,10 @@ public class HistoryChartFragment extends MvpAppCompatFragment implements IHisto
         return fragment;
     }
 
-    private ChartRenderer renderer = new ChartRenderer();
+    private GraphRenderer renderer = new GraphRenderer();
 
-    @BindView(R.id.main_chart)
-    LineChart lineChart;
+    @BindView(R.id.main_graph)
+    GraphView graph;
 
     @Inject
     HistoryInteractor interactor;
@@ -82,46 +80,25 @@ public class HistoryChartFragment extends MvpAppCompatFragment implements IHisto
 
     @Override
     public void showMessage(String message) {
-
+        ErrorHandler.showSnackBar(graph, message, presenter);
     }
 
     private void init(View view) {
         ButterKnife.bind(this, view);
-        renderer.adjustChart(lineChart);
-        lineChart.setData(new LineData());
+        renderer.adjustGraph(graph, getArguments().getString(TOOL_TYPE));
     }
-
+    
     @Override
-    public void feedChartWithPoints(AskBidPointsSet set) {
-        renderer.adjustChart(lineChart);
-        LineDataSet askSet = new LineDataSet(set.getAskEntries(), "ASK");
-        askSet.setDrawValues(false);
-        LineDataSet bidSet = new LineDataSet(set.getBidEntries(), "BID");
-        bidSet.setColor(R.color.red);
-        bidSet.setDrawValues(false);
-        LineData resultData = new LineData();
-        resultData.addDataSet(askSet);
-        resultData.addDataSet(bidSet);
-        lineChart.setData(new LineData(askSet));
-        lineChart.invalidate();
-    }
-
-    @Override
-    public void mergeLivePoints(AskBidPointsSet set) {
-        if (set.getAskPoints().size() != 0) {
-            LineData data = lineChart.getData();
-            if (data.getDataSets().size() == 0) {
-                LineDataSet askSet = new LineDataSet(set.getAskEntries(), "ASK");
-                askSet.setDrawValues(false);
-                LineDataSet bidSet = new LineDataSet(set.getBidEntries(), "BID");
-                bidSet.setColor(R.color.red);
-                bidSet.setDrawValues(false);
-                data.addDataSet(askSet);
-                data.addDataSet(bidSet);
-            } else {
-                renderer.mergeNewData(lineChart, data, set);
-            }
+    public void mergePoints(AskBidPointsSet set) {
+        if (set.getAsks().length != 0 & set.getBids().length != 0) {
+            renderer.mergeNewData(graph, set);
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setTitle(getArguments().getString(TOOL_TYPE));
+        hideBackButton(false);
     }
 }

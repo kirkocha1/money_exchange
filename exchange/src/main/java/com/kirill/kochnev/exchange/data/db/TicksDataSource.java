@@ -34,4 +34,8 @@ public class TicksDataSource {
     public void putTicks(List<TickDb> tickDbs) {
         dao.putTicks(tickDbs);
     }
+
+    public void deleteAllTicksByToolType(ToolType toolType) {
+        dao.deleteTicks(toolType.toString());
+    }
 }

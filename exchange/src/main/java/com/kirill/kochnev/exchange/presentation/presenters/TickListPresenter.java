@@ -5,6 +5,7 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.kirill.kochnev.exchange.data.enums.MessageType;
 import com.kirill.kochnev.exchange.domain.interactors.TickInteractor;
+import com.kirill.kochnev.exchange.presentation.interfaces.IRetry;
 import com.kirill.kochnev.exchange.presentation.interfaces.ITickListView;
 import com.kirill.kochnev.exchange.presentation.utils.TickTimer;
 
@@ -15,12 +16,17 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
+/**
+ * Presenter for {@link com.kirill.kochnev.exchange.presentation.views.TickListFragment}
+ */
 @InjectViewState
-public class TickListPresenter extends BasePresenter<ITickListView> {
+public class TickListPresenter extends BasePresenter<ITickListView> implements IRetry {
     private static final String TAG = "TickListPresenter";
 
     private TickInteractor interactor;
     private TickTimer timer;
+    private boolean wasError = false;
+
 
     public TickListPresenter(TickInteractor interactor, TickTimer tickTimer) {
         this.interactor = interactor;
@@ -29,10 +35,21 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(list -> subscribeOnStream())
-                .subscribe(list -> getViewState().recreateList(list), e -> {
+                .subscribe(list -> {
+                    getViewState().recreateList(list);
+                }, e -> {
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
                 }));
 
+    }
+
+    @Override
+    public void attachView(ITickListView view) {
+        super.attachView(view);
+        if (wasError) {
+            retry();
+            wasError = false;
+        }
     }
 
     public void retry() {
@@ -52,9 +69,16 @@ public class TickListPresenter extends BasePresenter<ITickListView> {
                         timer.triger(model.getTicks(), list -> getViewState().invalidateList(list));
                     }
                 }, e -> {
+                    wasError = true;
                     Log.e("ACTIVITY", "ERROR MESSAGE: " + e.getMessage());
                     getViewState().showMessage("ERROR MESSAGE");
-
                 }));
+    }
+
+    @Override
+    public void onDestroy() {
+        interactor.disconnect().subscribe(() -> {
+        }, e -> Log.e(TAG, e.getMessage()));
+        super.onDestroy();
     }
 }

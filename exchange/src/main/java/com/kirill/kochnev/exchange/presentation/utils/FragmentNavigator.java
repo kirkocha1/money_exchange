@@ -12,6 +12,13 @@ import com.kirill.kochnev.exchange.presentation.views.ToolSettingsFragment;
  * Created by kirill on 02.08.17.
  */
 
+/**
+ * <p>
+ * This class represents a simple fragment navigation in application
+ * <p>
+ * instance of this class should be set in Activity.onResume method
+ *
+ */
 public class FragmentNavigator {
 
     public static final String TICKS_SCREEN = "TICKS_SCREEN";
@@ -21,25 +28,45 @@ public class FragmentNavigator {
     private FragmentManager manager;
     private ScreenState state;
 
+    /**
+     * interface for callback which should be applied before navigation
+     */
+    public interface OnNavigateAction {
+        void beforeNavigate();
+    }
+
+    /**
+     * Method is used for setting FragmentManger
+     * @param manager
+     */
     public void setManager(FragmentManager manager) {
         this.manager = manager;
     }
 
+    public void clear() {
+        manager = null;
+    }
+
+    /**
+     * Main method of FragmentNavigator class it makes navigation from one fragment to another
+     * @param screenName
+     * @param data
+     * @param action
+     */
     public void navigateTo(String screenName, Object data, OnNavigateAction action) {
         switch (screenName) {
             case TICK_HISITORY_SCREEN:
+                moveToHistoryScreen(data, action);
                 state = ScreenState.HISTORY;
-                moveToHistoryScreen(data);
                 break;
             case TICKS_SCREEN:
-                state = ScreenState.TICKS;
                 moveToTicksScreen(action);
+                state = ScreenState.TICKS;
                 break;
             case SETTINGS_SCREEN:
-                state = ScreenState.SETTINGS;
                 moveToSettings(action);
+                state = ScreenState.SETTINGS;
                 break;
-
         }
     }
 
@@ -47,6 +74,10 @@ public class FragmentNavigator {
         navigateTo(screenName, null, null);
     }
 
+    /**
+     * when need to go to previous fragment
+     * @param action
+     */
     public void back(OnNavigateAction action) {
         if (action != null) {
             action.beforeNavigate();
@@ -56,12 +87,15 @@ public class FragmentNavigator {
         }
     }
 
-    private void moveToHistoryScreen(Object data) {
+    private void moveToHistoryScreen(Object data, OnNavigateAction action) {
         if (manager != null && data instanceof ToolType) {
+            if (action != null) {
+                action.beforeNavigate();
+            }
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                    .addToBackStack(TICK_HISITORY_SCREEN)
-                    .add(R.id.container, HistoryChartFragment.createFragment((ToolType) data))
+                    .addToBackStack(ScreenState.HISTORY.toString())
+                    .replace(R.id.container, HistoryChartFragment.createFragment((ToolType) data))
                     .commit();
         }
     }
@@ -83,20 +117,15 @@ public class FragmentNavigator {
             if (action != null) {
                 action.beforeNavigate();
             }
-            if (state.equals(ScreenState.SETTINGS)) {
-                manager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
-                        .addToBackStack(SETTINGS_SCREEN)
-                        .add(R.id.container, new ToolSettingsFragment())
-                        .commit();
+            if (state.equals(ScreenState.HISTORY)) {
+                manager.popBackStack();
             }
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right)
+                    .addToBackStack(ScreenState.SETTINGS.toString())
+                    .replace(R.id.container, new ToolSettingsFragment())
+                    .commit();
         }
-
-
-    }
-
-    public interface OnNavigateAction {
-        void beforeNavigate();
     }
 
     private enum ScreenState {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.kirill.kochnev.exchange.ExchangeApplication;
@@ -35,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by Kirill Kochnev on 28.07.17.
  */
 
-public class TickListFragment extends MvpAppCompatFragment implements ITickListView {
+public class TickListFragment extends BaseActionBarFragment implements ITickListView {
 
     public static final String TAG = "TickListFragment";
 
@@ -70,13 +69,7 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     @Override
     public void onResume() {
         super.onResume();
-        navigator.setManager(getFragmentManager());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        navigator.setManager(null);
+        setTitle(getString(R.string.ticks_title));
     }
 
     @Nullable
@@ -99,15 +92,13 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
     public void recreateList(List<TickUI> ticks) {
         adapter.replaceWithNewList(ticks);
         list.post(() -> {
-            list.setBlankVisibility(ticks == null);
+            list.setBlankVisibility(ticks == null || ticks.size() == 0);
         });
     }
 
     @Override
     public void showMessage(String error) {
-        new ErrorHandler().showSnackBar(list, error, v -> {
-            presenter.retry();
-        });
+        ErrorHandler.showSnackBar(list, error, presenter);
     }
 
     private void init(View view) {
@@ -126,7 +117,7 @@ public class TickListFragment extends MvpAppCompatFragment implements ITickListV
             adapter.changeListOrder(TickComparatorFactory.create(TickComparatorFactory.DEFAULT, isAsk));
         });
         adapter = new TicksAdapter();
-        adapter.setListener( (v, tool) -> {
+        adapter.setListener((v, tool) -> {
             navigator.navigateTo(FragmentNavigator.TICK_HISITORY_SCREEN, tool, null);
         });
         list.setHeader(header);

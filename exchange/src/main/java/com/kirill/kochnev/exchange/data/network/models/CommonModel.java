@@ -12,11 +12,21 @@ public class CommonModel {
 
     private MessageType messageType;
 
+    private String errorMessage;
+
     public CommonModel() {
     }
 
     public CommonModel(MessageType messageType) {
         this.messageType = messageType;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public MessageType getMessageType() {

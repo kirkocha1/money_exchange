@@ -17,6 +17,9 @@ import butterknife.ButterKnife;
  * Created by kirill on 02.08.17.
  */
 
+/**
+ * view which show sort order
+ */
 public class SortItemView extends FrameLayout {
 
     @BindView(R.id.desc)

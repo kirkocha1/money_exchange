@@ -18,6 +18,9 @@ import butterknife.ButterKnife;
  * Created by kirill on 02.08.17.
  */
 
+/**
+ * Header for TicksList
+ */
 public class TickHeaderView extends FrameLayout {
 
     @BindView(R.id.bid_container)

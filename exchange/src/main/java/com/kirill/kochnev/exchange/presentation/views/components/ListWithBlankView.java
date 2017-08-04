@@ -20,6 +20,9 @@ import butterknife.ButterKnife;
  * Created by Kirill Kochnev on 30.07.17.
  */
 
+/**
+ * List UI view with empty list picture
+ */
 public class ListWithBlankView extends FrameLayout {
 
     @BindView(R.id.list_header)
@@ -49,7 +52,6 @@ public class ListWithBlankView extends FrameLayout {
 
     public void initList(RecyclerView.Adapter adapter) {
         list.setAdapter(adapter);
-        setBlankVisibility(adapter.getItemCount() == 0);
     }
 
     public void setHeader(View view) {

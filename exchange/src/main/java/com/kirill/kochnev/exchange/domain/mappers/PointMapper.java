@@ -13,6 +13,9 @@ import java.util.List;
  * Created by kirill on 03.08.17.
  */
 
+/**
+ * class for {@link Point} mappings
+ */
 public class PointMapper {
 
     private Point mapAskVal(TickDb tick) {
