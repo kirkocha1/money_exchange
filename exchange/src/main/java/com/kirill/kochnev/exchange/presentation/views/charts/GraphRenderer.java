@@ -1,5 +1,8 @@
 package com.kirill.kochnev.exchange.presentation.views.charts;
 
+import android.graphics.Color;
+
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -49,19 +52,24 @@ public class GraphRenderer {
     public void mergeNewData(GraphView graph, AskBidPointsSet set) {
         if (isFirstTime) {
             asks = new LineGraphSeries<>(set.getAsks());
-            initSeries(asks, "ASK", R.color.red);
+            graph.getViewport().setXAxisBoundsManual(true);
+            double lapse = (set.getAsks()[set.getAsks().length - 1].getX() - set.getAsks()[0].getX()) / 2;
+            graph.getViewport().setMinX(set.getAsks()[0].getX() + lapse);
+            graph.getViewport().setMaxX(set.getAsks()[set.getAsks().length - 1].getX());
+            initSeries(asks, "ASK", Color.RED);
             bids = new LineGraphSeries<>(set.getBids());
-            initSeries(asks, "BID", R.color.green);
+            initSeries(asks, "BID", Color.GREEN);
             isFirstTime = false;
             graph.addSeries(asks);
             graph.addSeries(bids);
         } else {
             for (DataPoint entry : set.getAsks()) {
-                asks.appendData(entry, false, 1500);
+                asks.appendData(entry, false, 400);
             }
             for (DataPoint entry : set.getBids()) {
-                bids.appendData(entry, false, 1500);
+                bids.appendData(entry, false, 400);
             }
+            graph.getViewport().setMaxX(set.getBids()[set.getAsks().length - 1].getX());
         }
         graph.getViewport().scrollToEnd();
     }

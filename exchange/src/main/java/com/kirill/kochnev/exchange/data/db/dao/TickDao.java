@@ -17,10 +17,10 @@ import java.util.List;
 @Dao
 public interface TickDao {
 
-    @Query("SELECT * FROM ticks WHERE tool_type = :toolType ORDER BY creation_date LIMIT 500")
+    @Query("SELECT * FROM ticks WHERE tool_type = :toolType ORDER BY creation_date ASC LIMIT 300")
     List<TickDb> getTicksByToolType(String toolType);
 
-    @Query("SELECT * FROM ticks WHERE tool_type IN (:type) GROUP BY tool_type ORDER BY creation_date LIMIT :count")
+    @Query("SELECT * FROM ticks WHERE tool_type IN (:type) GROUP BY tool_type ORDER BY creation_date ASC LIMIT :count")
     List<TickDb> getSubscribedTicks(List<String> type, int count);
 
     @Insert
@@ -28,6 +28,5 @@ public interface TickDao {
 
     @Query("DELETE FROM ticks WHERE tool_type = :toolType")
     void deleteTicks(String toolType);
-
 
 }
