@@ -4,6 +4,9 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url  "https://kirillkochnev.bintray.com/com-kirill-kochnev-websocket"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
@@ -22,6 +25,9 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven {
             url "https://repository-achartengine.forge.cloudbees.com/snapshot/"
+        }
+        maven {
+            url  "https://kirillkochnev.bintray.com/com-kirill-kochnev-websocket"
         }
     }
 }
